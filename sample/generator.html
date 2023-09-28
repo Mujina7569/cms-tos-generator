@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web URL Generator</title>
+    <script>
+      // Define your URL template with placeholders for the user's input and choices
+      const urlTemplate = "https://example.com/?name=[NAME]&city=[CITY]&hotel=[HOTEL]";
+
+      function generateUrl() {
+        // Get the user's input and choices
+        const name = document.getElementById("name").value;
+        const city = document.getElementById("city").value;
+        const hotel = document.getElementById("hotel").value;
+
+        // Replace the placeholders in the URL template with the user's input and choices
+        let generatedUrl = urlTemplate
+          .replace("[NAME]", encodeURIComponent(name))
+          .replace("[CITY]", encodeURIComponent(city))
+          .replace("[HOTEL]", encodeURIComponent(hotel));
+
+        // Replace special characters with their URL-encoded equivalents
+        generatedUrl = generatedUrl.replace(/ /g, '%20');
+        generatedUrl = generatedUrl.replace(/!/g, '%21');
+        generatedUrl = generatedUrl.replace(/'/g, '%27');
+        generatedUrl = generatedUrl.replace(/\(/g, '%28');
+        generatedUrl = generatedUrl.replace(/\)/g, '%29');
+        generatedUrl = generatedUrl.replace(/\*/g, '%2A');
+
+        // Update the HTML element with the generated URL
+        document.getElementById("output").textContent = generatedUrl;
+
+        // Set the clipboard text to the generated URL
+        const clipboardText = document.getElementById("clipboard-text");
+        clipboardText.value = generatedUrl;
+      }
+
+      function copyToClipboard() {
+        // Get the clipboard text
+        const clipboardText = document.getElementById("clipboard-text");
+
+        // Select the text in the input field
+        clipboardText.select();
+        clipboardText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the selected text to the clipboard
+        document.execCommand("copy");
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Web URL Generator</h1>
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name"><br>
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city"><br>
+      <label for="hotel">Hotel:</label>
+      <select id="hotel" name="hotel">
+        <option value="Marriott">Marriott</option>
+        <option value="Hilton">Hilton</option>
+        <option value="Sheraton">Sheraton</option>
+      </select><br>
+      <button type="button" onclick="generateUrl()">Generate URL</button>
+    </form>
+    <p id="output"></p>
+    <div>
+      <input type="text" id="clipboard-text" style="position: absolute; top: -9999px;" />
+      <button type="button" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+  </body>
+</html>
