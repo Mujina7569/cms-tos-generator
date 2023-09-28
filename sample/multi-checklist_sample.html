@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Text Generator</title>
+    <script>
+      // Define your list templates with placeholders for the user's input and choices
+      const listTemplates = {
+        mainList: "<ul>" +
+                  "<li>Name: [NAME]</li>" +
+                  "<li>City: [CITY]</li>" +
+                  "<li>Hotel: [HOTEL]</li>" +
+                  "</ul>",
+        checkboxLists: {
+          serviceList: "<li>Selected Services:</li><ul id='service-list'></ul>",
+          amenityList: "<li>Selected Amenities:</li><ul id='amenity-list'></ul>",
+          // Add more categories as needed
+        }
+      };
+
+      function generateText() {
+        // Get the user's input and choices
+        const name = document.getElementById("name").value;
+        const city = document.getElementById("city").value;
+        const hotel = document.getElementById("hotel").value;
+
+        // Create objects to store the selected checkboxes for different categories
+        const selectedCheckboxes = {
+          services: [],
+          amenities: [],
+          // Add more categories as needed
+        };
+
+        // Get all the checkbox elements for services and amenities
+        const serviceCheckboxes = document.querySelectorAll('input[name="service"]:checked');
+        const amenityCheckboxes = document.querySelectorAll('input[name="amenity"]:checked');
+        // Add more checkbox categories as needed
+
+        // Add the text from the selected checkboxes to the respective category arrays
+        serviceCheckboxes.forEach((checkbox) => {
+          selectedCheckboxes.services.push(`<li>${checkbox.value}</li>`);
+        });
+
+        amenityCheckboxes.forEach((checkbox) => {
+          selectedCheckboxes.amenities.push(`<li>${checkbox.value}</li>`);
+        });
+
+        // Replace the placeholders in the main list template with the user's input and choices
+        let generatedText = listTemplates.mainList
+          .replace("[NAME]", name)
+          .replace("[CITY]", city)
+          .replace("[HOTEL]", hotel);
+
+        // Generate lists for selected checkboxes in different categories
+        for (const category in selectedCheckboxes) {
+          if (selectedCheckboxes[category].length > 0) {
+            generatedText += listTemplates.checkboxLists[category] + selectedCheckboxes[category].join('');
+          }
+        }
+
+        // Update the HTML element with the generated content
+        document.getElementById("output").innerHTML = generatedText;
+
+        // Set the clipboard text to the generated content
+        const clipboardText = document.getElementById("clipboard-text");
+        clipboardText.value = generatedText;
+      }
+
+      function copyToClipboard() {
+        // Get the clipboard text
+        const clipboardText = document.getElementById("clipboard-text");
+
+        // Select the text in the input field
+        clipboardText.select();
+        clipboardText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the selected text to the clipboard
+        document.execCommand("copy");
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Web Text Generator</h1>
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name"><br>
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city"><br>
+      <label for="hotel">Hotel:</label>
+      <select id="hotel" name="hotel">
+        <option value="Marriott">Marriott</option>
+        <option value="Hilton">Hilton</option>
+        <option value="Sheraton">Sheraton</option>
+      </select><br>
+      <label>Services:</label><br>
+      <input type="checkbox" id="service1" name="service" value="Service 1"> Service 1<br>
+      <input type="checkbox" id="service2" name="service" value="Service 2"> Service 2<br>
+      <input type="checkbox" id="service3" name="service" value="Service 3"> Service 3<br>
+      <label>Amenities:</label><br>
+      <input type="checkbox" id="amenity1" name="amenity" value="Amenity 1"> Amenity 1<br>
+      <input type="checkbox" id="amenity2" name="amenity" value="Amenity 2"> Amenity 2<br>
+      <input type="checkbox" id="amenity3" name="amenity" value="Amenity 3"> Amenity 3<br>
+      <button type="button" onclick="generateText()">Generate Text</button>
+    </form>
+    <div id="output"></div>
+    <div>
+      <input type="text" id="clipboard-text" style="position: absolute; top: -9999px;" />
+      <button type="button" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+  </body>
+</html>
