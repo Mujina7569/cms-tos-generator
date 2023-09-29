@@ -1,4 +1,16 @@
-import { CheckboxGroup, Heading, Checkbox, Stack, Box, InputGroup, InputLeftAddon, Text, Input, InputRightAddon } from "@chakra-ui/react";
+import {
+  CheckboxGroup,
+  Heading,
+  Checkbox,
+  Stack,
+  Box,
+  InputGroup,
+  InputLeftAddon,
+  Text,
+  Input,
+  InputRightAddon,
+  Button,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const index = () => {
@@ -24,10 +36,39 @@ const index = () => {
     commercialPercent: 0,
     commercialPercentSorce: "ราคาเริ่มต้น",
   });
+  const [template, setTemplate] = useState(null);
+  const generateTemplate = () => {
+    const listTemplate = (
+      <ul>
+        <li>ลูกค้าจะต้องติดต่อจ้าง ผ่านช่องทางที่ระบุไว้เท่านั้น</li>
+        <li>
+          สามารถนำรูปไปใช้{" "}
+          {form.rights.map((item) => (
+            <a>{item}</a>
+          ))}{" "}
+          แต่ต้องให้เครดิตหรือแสดงแหล่งที่มา
+          พร้อมลิงค์ช่องโซเซียลมิเดียที่ระบุไว้
+        </li>
+        <li>
+          รูปจะถูกนำไปใช้เป็นตัวอย่างงาน หากไม่ต้องการให้โพสต์เป็นตัวอย่างงาน
+          กรุณาแจ้งล่วงหน้า
+        </li>
+        <li>
+          หลังจากที่ยันยันแบบร่างเรียบร้อย ลูกค้าจะต้องชำระมัดจำ{" "}
+          {form.installment}% ของราคางาน
+          และจะดำเนินงานต่อเมื่อชำระมัดจำเรียบร้อยแล้ว
+        </li>
+      </ul>
+    );
+    setTemplate(listTemplate);
+  };
   return (
     <Box>
       <Heading textStyle={"h1"}>Simple ToS Generator</Heading>
-      <CheckboxGroup value={form.rights} onChange={(val)=> setForm((prev)=>prev.rights = val)}>
+      <CheckboxGroup
+        value={form.rights}
+        onChange={(val) => setForm((prev) => ({...prev, rights: val}))}
+      >
         <Stack direction={"row"}>
           <Checkbox value="ส่วนตัว">ส่วนตัว</Checkbox>
           <Checkbox value="แจกจ่าย">แจกจ่าย</Checkbox>
@@ -38,7 +79,10 @@ const index = () => {
         <InputLeftAddon>
           <Text>ราคามัดจำ ก่อนเริ่มงาน</Text>
         </InputLeftAddon>
-        <Input value={form.installment} onChange={(e)=>setForm((prev)=>prev.rights = e.target.value)}></Input>
+        <Input
+          value={form.installment}
+          onChange={(e) => setForm((prev) => ({...prev, installment: e.target.value}))}
+        ></Input>
         <InputRightAddon>%</InputRightAddon>
       </InputGroup>
       <label for="times">จำนวนครั้ง สอบถาม/ทวงงาน</label>
@@ -117,8 +161,8 @@ const index = () => {
         <option value="ราคารวม">ราคารวม</option>
       </select>
       <br />
-      <button>Generate</button>
-      <p id="output"></p>
+      <Button onClick={generateTemplate}>Generate</Button>
+      <p id="output">{template}</p>
       <Box>
         <input
           type="text"
