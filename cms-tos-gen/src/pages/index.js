@@ -10,33 +10,41 @@ import {
   Input,
   InputRightAddon,
   Button,
+  Radio, RadioGroup,
+  Select,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const index = () => {
   const [form, setForm] = useState({
     rights: [],
-    installment: 0,
-    remind: 0,
+    installment: 50,
+    remind: 1,
     remindUnit: "วัน",
     deliverables: [],
     size: {
-      width: 0,
-      height: 0,
-      dpi: 0,
+      width: 3508 ,
+      height: 2480 ,
+      dpi: 300 ,
     },
     maxSize: {
-      width: 0,
-      height: 0,
-      dpi: 0,
+      width: 3508 ,
+      height: 2480 ,
+      dpi: 300 ,
     },
     addDeliverables: [],
-    hurry: "",
-    hurryDuration: 0,
-    commercialPercent: 0,
+    rush: "",
+    rushDuration: 3,
+    commercialPercent: 50,
     commercialPercentSorce: "ราคาเริ่มต้น",
   });
   const [template, setTemplate] = useState(null);
+  console.log('')
   const generateTemplate = () => {
     const listTemplate = (
       <ul>
@@ -58,110 +66,200 @@ const index = () => {
           {form.installment}% ของราคางาน
           และจะดำเนินงานต่อเมื่อชำระมัดจำเรียบร้อยแล้ว
         </li>
+        <li>ลูกค้าสามารถติดต่อสอบถามความคืบหน้าได้ ไม่เกิน {form.remind} ครั้งต่อ {form.remindUnit} โดยติดต่อผ่านช่องทางติดต่อที่ระบุไว้เท่านั้น</li>
+        <li>ไฟล์ที่ได้รับจะเป็นนามสกุล {" "}
+          {form.deliverables.map((item) => (
+            <a>{item}</a>
+          ))}{" "} ขนาด {form.size.width} x {form.size.height} px {form.size.dpi} DPI หากขนาดใหญ่กว่า {form.maxSize.width} x {form.maxSize.height} px {form.maxSize.dpi} DPI หรือต้องการไฟล์ {form.addDeliverables} จะมีการคิดเพิ่ม</li>
+        <li>{form.rush} ไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>
+        <li>หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.commercialPercent} % ของ{form.commercialPercentSorce}</li>
       </ul>
     );
     setTemplate(listTemplate);
   };
+  
   return (
     <Box>
       <Heading textStyle={"h1"}>Simple ToS Generator</Heading>
+      <br/>
       <CheckboxGroup
         value={form.rights}
-        onChange={(val) => setForm((prev) => ({...prev, rights: val}))}
+        onChange={(val) => setForm((prev) => ({ ...prev, rights: val }))}
       >
+        <Text>สิทธิ์การใช้งาน ในราคาปกติ</Text>
         <Stack direction={"row"}>
-          <Checkbox value="ส่วนตัว">ส่วนตัว</Checkbox>
+          <Checkbox value="ส่วนตัว" defaultChecked>ส่วนตัว</Checkbox>
           <Checkbox value="แจกจ่าย">แจกจ่าย</Checkbox>
           <Checkbox value="เชิงพาณิชย์">เชิงพาณิชย์</Checkbox>
         </Stack>
       </CheckboxGroup>
+
       <InputGroup>
         <InputLeftAddon>
           <Text>ราคามัดจำ ก่อนเริ่มงาน</Text>
         </InputLeftAddon>
         <Input
           value={form.installment}
-          onChange={(e) => setForm((prev) => ({...prev, installment: e.target.value}))}
+          onChange={(e) => setForm((prev) => ({ ...prev, installment: e.target.value }))}
         ></Input>
         <InputRightAddon>%</InputRightAddon>
       </InputGroup>
-      <label for="times">จำนวนครั้ง สอบถาม/ทวงงาน</label>
-      <input type="number" id="times" name="times" min="1" max="10" />
-      <select id="days" name="days">
-        <option value="วัน">วัน</option>
-        <option value="สัปดาห์">สัปดาห์</option>
-      </select>
-      <br />
-      <br />
-      <label for="ext">ไฟล์ปกติที่ลูกค้าจะได้รับ</label>
-      <br />
-      <input type="checkbox" id="่jpg" name="ext" value=".JPG" /> .JPG
-      <input type="checkbox" id="png" name="ext" value=".PNG" /> .PNG
-      <input type="checkbox" id="psd" name="ext" value=".PSD" /> .PSD
-      (Photoshop)
-      <input type="checkbox" id="sai" name="ext" value=".SAI" /> .SAI (SAI Paint
-      tool)
-      <input type="checkbox" id="clip" name="ext" value=".CLIP" /> .CLIP (CLIP
-      STUDIO)
-      <br />
-      <br />
-      <label>ขนาดรูปปกติ (สำหรับ A4 ใช้ 3508 x 2480 px 300 DPI)</label>
-      <br />
-      <label for="width">กว้าง:</label>
-      <input type="number" id="width" name="width" />
-      <label for="height">ยาว:</label>
-      <input type="number" id="height" name="height" />
-      <label for="dpi">DPI:</label>
-      <input type="number" id="dpi" name="dpi" />
-      <br />
-      <br />
-      <label>ขนาดรูปสูงสุดในราคาปกติ</label>
-      <br />
-      <label for="Maxwidth">กว้าง:</label>
-      <input type="number" id="Maxwidth" name="Maxwidth" />
-      <label for="Maxheight">ยาว:</label>
-      <input type="number" id="Maxheight" name="Maxheight" />
-      <label for="Maxdpi">DPI:</label>
-      <input type="number" id="Maxdpi" name="Maxdpi" />
-      <br />
-      <br />
-      <label for="addExt">ไฟล์ที่จะคิดราคาเพิ่ม</label>
-      <br />
-      <input type="checkbox" id="่jpg" name="addExt" value=".JPG" /> .JPG
-      <input type="checkbox" id="png" name="addExt" value=".PNG" /> .PNG
-      <input type="checkbox" id="psd" name="addExt" value=".PSD" /> .PSD
-      (Photoshop)
-      <input type="checkbox" id="sai" name="addExt" value=".SAI" /> .SAI (SAI
-      Paint tool)
-      <input type="checkbox" id="clip" name="addExt" value=".CLIP" /> .CLIP
-      (CLIP STUDIO)
-      <br />
-      <br />
-      <label for="rush">การรับงานเร่ง</label>
-      <input type="radio" id="accept" name="rush" value="รับงานเร่ง" />
-      <label for="accept">รับงานเร่ง</label>
-      <input
-        type="radio"
-        id="decline"
-        name="rush"
-        value="ไม่รับงานเร่งทุกกรณี"
-      />
-      <label for="decline">ไม่รับงานเร่ง</label>
-      <br />
-      <label for="rushDays">ระยะเวลาทำงานเร็วที่สุด สำหรับงานเร่ง</label>
-      <input type="number" id="rushDays" name="rushDays" min="1" max="10" />
-      <label>วัน</label>
-      <br />
-      <br />
-      <label for="multipy">การคิดราคาเชิงพาณิชย์ เพิ่มอีก</label>
-      <input type="number" id="multipy" name="multipy" min="10" max="100" />
-      <label for="price">% ของ</label>
-      <select id="price" name="price">
-        <option value="ราคาเริ่มต้น">ราคาเริ่มต้น</option>
-        <option value="ราคารวม">ราคารวม</option>
-      </select>
+
+      <InputGroup>
+        <InputLeftAddon>
+          <Text>จำนวนครั้ง สอบถาม/ทวงงาน</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.remind}
+          onChange={(e) => setForm((prev) => ({ ...prev, remind: e.target.value }))}
+        ></Input>
+        <InputRightAddon>ครั้งต่อ</InputRightAddon>
+        {/* <RadioGroup defaultValue='1'>
+          <Stack direction='row'>
+            <Radio value='1'>วัน</Radio>
+            <Radio value='2'>สัปดาห์</Radio>
+          </Stack>
+        </RadioGroup> */}
+        <Select placeholder='Select option'
+          value={form.remindUnit}
+          onChange={(e) => setForm((prev) => ({ ...prev, remindUnit: e.target.value }))}>
+          <option value='option1'>วัน</option>
+          <option value='option2'>สัปดาห์</option>
+        </Select>
+      </InputGroup>
+
+      <CheckboxGroup
+        value={form.deliverables}
+        onChange={(val) => setForm((prev) => ({ ...prev, deliverables: val }))}
+      >
+        <Text>ไฟล์ปกติที่ลูกค้าจะได้รับ</Text>
+        <Stack direction={"row"}>
+          <Checkbox value="JPG">.JPG</Checkbox>
+          <Checkbox value="PNG">.PNG</Checkbox>
+          <Checkbox defaultChecked value="PSD">.PSD (Photoshop)</Checkbox>
+          <Checkbox value="SAI">.SAI (SAI Paint tool)</Checkbox>
+          <Checkbox value="CLIP">.CLIP (CLIP STUDIO)</Checkbox>
+        </Stack>
+      </CheckboxGroup>
+
+
+      <Text>ขนาดรูปปกติ (สำหรับ A4 ใช้ 3508 x 2480 px 300 DPI)</Text>
+      <InputGroup>
+        <InputLeftAddon>
+          <Text>กว้าง</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.size.width}
+          onChange={(e) => (prev) => ({...prev, size:{ ...prev.size, width: e.target.value }})}
+        ></Input>
+        <InputRightAddon>px</InputRightAddon>
+
+        <InputLeftAddon>
+          <Text>ยาว</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.size.height}
+          onChange={(e) => ((prev) => ({ ...prev.size, height: e.target.value }))}
+        ></Input>
+        <InputRightAddon>px</InputRightAddon>
+
+        <InputLeftAddon>
+          <Text>ความละเอียดไฟล์</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.size.dpi}
+          onChange={(e) => ((prev) => ({ ...prev.size, dpi: e.target.value }))}
+        ></Input>
+        <InputRightAddon>DPI</InputRightAddon>
+      </InputGroup>
+
+
+      <Text>ขนาดรูปสูงสุดในราคาปกติ</Text>
+      <InputGroup>
+        <InputLeftAddon>
+          <Text>กว้าง</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.maxSize.width}
+          onChange={(e) => setForm((prev) => ({ ...prev.maxSize, width: e.target.value }))}
+        ></Input>
+        <InputRightAddon>px</InputRightAddon>
+
+        <InputLeftAddon>
+          <Text>ยาว</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.maxSize.height}
+          onChange={(e) => setForm((prev) => ({ ...prev.maxSize, height: e.target.value }))}
+        ></Input>
+        <InputRightAddon>px</InputRightAddon>
+
+        <InputLeftAddon>
+          <Text>ความละเอียดไฟล์</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.maxSize.dpi}
+          onChange={(e) => setForm((prev) => ({ ...prev.maxSize, dpi: e.target.value }))}
+        ></Input>
+        <InputRightAddon>DPI</InputRightAddon>
+      </InputGroup>
+
+      <CheckboxGroup
+        value={form.addDeliverables}
+        onChange={(val) => setForm((prev) => ({ ...prev, addDeliverables: val }))}
+      >
+        <Text>ไฟล์ที่จะคิดราคาเพิ่ม</Text>
+        <Stack direction={"row"}>
+          <Checkbox value="JPG">.JPG</Checkbox>
+          <Checkbox value="PNG">.PNG</Checkbox>
+          <Checkbox value="PSD">.PSD (Photoshop)</Checkbox>
+          <Checkbox value="SAI">.SAI (SAI Paint tool)</Checkbox>
+          <Checkbox value="CLIP">.CLIP (CLIP STUDIO)</Checkbox>
+        </Stack>
+      </CheckboxGroup>
+
+      
+    <RadioGroup 
+        value={form.rush}
+        onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}>
+      <Text>การรับงานเร่ง</Text>
+      <Stack direction='row'>
+        <Radio value='รับงานเร่ง'>รับงานเร่ง</Radio>
+        <Radio value='ไม่รับงานเร่งทุกกรณี'>ไม่รับงานเร่ง</Radio>
+      </Stack>
+    </RadioGroup>
+
+      <InputGroup>
+        <InputLeftAddon>
+          <Text>ระยะเวลาทำงานเร็วที่สุด สำหรับงานเร่ง</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.rushDuration}
+          onChange={(e) => setForm((prev) => ({ ...prev, rushDuration: e.target.value }))}
+        ></Input>
+        <InputRightAddon>วัน</InputRightAddon>
+      </InputGroup>
+
+      <InputGroup>
+        <InputLeftAddon>
+          <Text>การคิดราคาเชิงพาณิชย์ เพิ่มอีก</Text>
+        </InputLeftAddon>
+        <Input
+          value={form.commercialPercent}
+          onChange={(e) => setForm((prev) => ({ ...prev, commercialPercent: e.target.value }))}
+        ></Input>
+        <InputRightAddon>ครั้งต่อ</InputRightAddon>
+        <Select placeholder='Select option'
+          value={form.commercialPercentSorce}
+          onChange={(e) => setForm((prev) => ({ ...prev, commercialPercentSorce: e.target.value }))}>
+          <option value='option1'>ราคาเริ่มต้น</option>
+          <option value='option2'>ราคารวม</option>
+        </Select>
+      </InputGroup>
       <br />
       <Button onClick={generateTemplate}>Generate</Button>
+      <Button>Copy to Clipboard</Button>
+      <Button>Copy Plain Text</Button>
       <p id="output">{template}</p>
       <Box>
         <input
@@ -170,10 +268,9 @@ const index = () => {
           style={{ position: "absolute", top: "-9999px" }}
           readOnly
         />
-        <button>Copy to Clipboard</button>
-        <button>Copy Plain Text</button>
       </Box>
     </Box>
+    
   );
 };
 
