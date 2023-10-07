@@ -10,7 +10,8 @@ import {
   Input,
   InputRightAddon,
   Button,
-  Radio, RadioGroup,
+  Radio,
+  RadioGroup,
   Select,
   NumberInput,
   NumberInputField,
@@ -28,14 +29,14 @@ const index = () => {
     remindUnit: "วัน",
     deliverables: [],
     size: {
-      width: 3508 ,
-      height: 2480 ,
-      dpi: 300 ,
+      width: 3508,
+      height: 2480,
+      dpi: 300,
     },
     maxSize: {
-      width: 3508 ,
-      height: 2480 ,
-      dpi: 300 ,
+      width: 3508,
+      height: 2480,
+      dpi: 300,
     },
     addDeliverables: [],
     rush: "",
@@ -44,7 +45,6 @@ const index = () => {
     commercialPercentSorce: "ราคาเริ่มต้น",
   });
   const [template, setTemplate] = useState(null);
-  console.log('')
   const generateTemplate = () => {
     const listTemplate = (
       <ul>
@@ -66,29 +66,45 @@ const index = () => {
           {form.installment}% ของราคางาน
           และจะดำเนินงานต่อเมื่อชำระมัดจำเรียบร้อยแล้ว
         </li>
-        <li>ลูกค้าสามารถติดต่อสอบถามความคืบหน้าได้ ไม่เกิน {form.remind} ครั้งต่อ {form.remindUnit} โดยติดต่อผ่านช่องทางติดต่อที่ระบุไว้เท่านั้น</li>
-        <li>ไฟล์ที่ได้รับจะเป็นนามสกุล {" "}
+        <li>
+          ลูกค้าสามารถติดต่อสอบถามความคืบหน้าได้ ไม่เกิน {form.remind} ครั้งต่อ{" "}
+          {form.remindUnit} โดยติดต่อผ่านช่องทางติดต่อที่ระบุไว้เท่านั้น
+        </li>
+        <li>
+          ไฟล์ที่ได้รับจะเป็นนามสกุล{" "}
           {form.deliverables.map((item) => (
             <a>{item}</a>
-          ))}{" "} ขนาด {form.size.width} x {form.size.height} px {form.size.dpi} DPI หากขนาดใหญ่กว่า {form.maxSize.width} x {form.maxSize.height} px {form.maxSize.dpi} DPI หรือต้องการไฟล์ {form.addDeliverables} จะมีการคิดเพิ่ม</li>
-        <li>{form.rush} ไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>
-        <li>หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.commercialPercent} % ของ{form.commercialPercentSorce}</li>
+          ))}{" "}
+          ขนาด {form.size.width} x {form.size.height} px {form.size.dpi} DPI
+          หากขนาดใหญ่กว่า {form.maxSize.width} x {form.maxSize.height} px{" "}
+          {form.maxSize.dpi} DPI หรือต้องการไฟล์ {form.addDeliverables}{" "}
+          จะมีการคิดเพิ่ม
+        </li>
+        <li>
+          {form.rush} ไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น
+        </li>
+        <li>
+          หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม{" "}
+          {form.commercialPercent} % ของ{form.commercialPercentSorce}
+        </li>
       </ul>
     );
     setTemplate(listTemplate);
   };
-  
+
   return (
     <Box>
       <Heading textStyle={"h1"}>Simple ToS Generator</Heading>
-      <br/>
+      <br />
       <CheckboxGroup
         value={form.rights}
         onChange={(val) => setForm((prev) => ({ ...prev, rights: val }))}
       >
         <Text>สิทธิ์การใช้งาน ในราคาปกติ</Text>
         <Stack direction={"row"}>
-          <Checkbox value="ส่วนตัว" defaultChecked>ส่วนตัว</Checkbox>
+          <Checkbox value="ส่วนตัว" defaultChecked>
+            ส่วนตัว
+          </Checkbox>
           <Checkbox value="แจกจ่าย">แจกจ่าย</Checkbox>
           <Checkbox value="เชิงพาณิชย์">เชิงพาณิชย์</Checkbox>
         </Stack>
@@ -100,7 +116,9 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.installment}
-          onChange={(e) => setForm((prev) => ({ ...prev, installment: e.target.value }))}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, installment: e.target.value }))
+          }
         ></Input>
         <InputRightAddon>%</InputRightAddon>
       </InputGroup>
@@ -111,7 +129,9 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.remind}
-          onChange={(e) => setForm((prev) => ({ ...prev, remind: e.target.value }))}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, remind: e.target.value }))
+          }
         ></Input>
         <InputRightAddon>ครั้งต่อ</InputRightAddon>
         {/* <RadioGroup defaultValue='1'>
@@ -120,11 +140,15 @@ const index = () => {
             <Radio value='2'>สัปดาห์</Radio>
           </Stack>
         </RadioGroup> */}
-        <Select placeholder='Select option'
+        <Select
+          placeholder="Select option"
           value={form.remindUnit}
-          onChange={(e) => setForm((prev) => ({ ...prev, remindUnit: e.target.value }))}>
-          <option value='option1'>วัน</option>
-          <option value='option2'>สัปดาห์</option>
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, remindUnit: e.target.value }))
+          }
+        >
+          <option value="option1">วัน</option>
+          <option value="option2">สัปดาห์</option>
         </Select>
       </InputGroup>
 
@@ -136,21 +160,26 @@ const index = () => {
         <Stack direction={"row"}>
           <Checkbox value="JPG">.JPG</Checkbox>
           <Checkbox value="PNG">.PNG</Checkbox>
-          <Checkbox defaultChecked value="PSD">.PSD (Photoshop)</Checkbox>
+          <Checkbox defaultChecked value="PSD">
+            .PSD (Photoshop)
+          </Checkbox>
           <Checkbox value="SAI">.SAI (SAI Paint tool)</Checkbox>
           <Checkbox value="CLIP">.CLIP (CLIP STUDIO)</Checkbox>
         </Stack>
       </CheckboxGroup>
-
 
       <Text>ขนาดรูปปกติ (สำหรับ A4 ใช้ 3508 x 2480 px 300 DPI)</Text>
       <InputGroup>
         <InputLeftAddon>
           <Text>กว้าง</Text>
         </InputLeftAddon>
+        {console.log(form)}
         <Input
           value={form.size.width}
-          onChange={(e) => (prev) => ({...prev, size:{ ...prev.size, width: e.target.value }})}
+          onChange={(e) => setForm((prev) => {
+            console.log(prev)
+            return { ...prev, size: { ...prev.size, width: e.target.value } };
+          })}
         ></Input>
         <InputRightAddon>px</InputRightAddon>
 
@@ -159,7 +188,7 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.size.height}
-          onChange={(e) => ((prev) => ({ ...prev.size, height: e.target.value }))}
+          onChange={(e) => setForm((prev) => ({...prev, size:{ ...prev.size, height: e.target.value }}))}
         ></Input>
         <InputRightAddon>px</InputRightAddon>
 
@@ -168,11 +197,10 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.size.dpi}
-          onChange={(e) => ((prev) => ({ ...prev.size, dpi: e.target.value }))}
+          onChange={(e) => setForm((prev) => ({...prev, size:{ ...prev.size, dpi: e.target.value }}))}
         ></Input>
         <InputRightAddon>DPI</InputRightAddon>
       </InputGroup>
-
 
       <Text>ขนาดรูปสูงสุดในราคาปกติ</Text>
       <InputGroup>
@@ -181,7 +209,9 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.maxSize.width}
-          onChange={(e) => setForm((prev) => ({ ...prev.maxSize, width: e.target.value }))}
+          onChange={(e) =>
+            setForm((prev) => ({...prev, maxSize:{ ...prev.maxSize, width: e.target.value }}))
+          }
         ></Input>
         <InputRightAddon>px</InputRightAddon>
 
@@ -190,7 +220,9 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.maxSize.height}
-          onChange={(e) => setForm((prev) => ({ ...prev.maxSize, height: e.target.value }))}
+          onChange={(e) =>
+            setForm((prev) => ({...prev, maxSize:{ ...prev.maxSize, height: e.target.value }}))
+          }
         ></Input>
         <InputRightAddon>px</InputRightAddon>
 
@@ -199,14 +231,18 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.maxSize.dpi}
-          onChange={(e) => setForm((prev) => ({ ...prev.maxSize, dpi: e.target.value }))}
+          onChange={(e) =>
+            setForm((prev) => ({...prev, maxSize:{ ...prev.maxSize, dpi: e.target.value }}))
+          }
         ></Input>
         <InputRightAddon>DPI</InputRightAddon>
       </InputGroup>
 
       <CheckboxGroup
         value={form.addDeliverables}
-        onChange={(val) => setForm((prev) => ({ ...prev, addDeliverables: val }))}
+        onChange={(val) =>
+          setForm((prev) => ({ ...prev, addDeliverables: val }))
+        }
       >
         <Text>ไฟล์ที่จะคิดราคาเพิ่ม</Text>
         <Stack direction={"row"}>
@@ -218,16 +254,16 @@ const index = () => {
         </Stack>
       </CheckboxGroup>
 
-      
-    <RadioGroup 
+      <RadioGroup
         value={form.rush}
-        onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}>
-      <Text>การรับงานเร่ง</Text>
-      <Stack direction='row'>
-        <Radio value='รับงานเร่ง'>รับงานเร่ง</Radio>
-        <Radio value='ไม่รับงานเร่งทุกกรณี'>ไม่รับงานเร่ง</Radio>
-      </Stack>
-    </RadioGroup>
+        onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}
+      >
+        <Text>การรับงานเร่ง</Text>
+        <Stack direction="row">
+          <Radio value="รับงานเร่ง">รับงานเร่ง</Radio>
+          <Radio value="ไม่รับงานเร่งทุกกรณี">ไม่รับงานเร่ง</Radio>
+        </Stack>
+      </RadioGroup>
 
       <InputGroup>
         <InputLeftAddon>
@@ -235,7 +271,9 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.rushDuration}
-          onChange={(e) => setForm((prev) => ({ ...prev, rushDuration: e.target.value }))}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, rushDuration: e.target.value }))
+          }
         ></Input>
         <InputRightAddon>วัน</InputRightAddon>
       </InputGroup>
@@ -246,14 +284,23 @@ const index = () => {
         </InputLeftAddon>
         <Input
           value={form.commercialPercent}
-          onChange={(e) => setForm((prev) => ({ ...prev, commercialPercent: e.target.value }))}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, commercialPercent: e.target.value }))
+          }
         ></Input>
         <InputRightAddon>ครั้งต่อ</InputRightAddon>
-        <Select placeholder='Select option'
+        <Select
+          placeholder="Select option"
           value={form.commercialPercentSorce}
-          onChange={(e) => setForm((prev) => ({ ...prev, commercialPercentSorce: e.target.value }))}>
-          <option value='option1'>ราคาเริ่มต้น</option>
-          <option value='option2'>ราคารวม</option>
+          onChange={(e) =>
+            setForm((prev) => ({
+              ...prev,
+              commercialPercentSorce: e.target.value,
+            }))
+          }
+        >
+          <option value="option1">ราคาเริ่มต้น</option>
+          <option value="option2">ราคารวม</option>
         </Select>
       </InputGroup>
       <br />
@@ -270,7 +317,6 @@ const index = () => {
         />
       </Box>
     </Box>
-    
   );
 };
 
