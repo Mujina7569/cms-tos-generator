@@ -92,6 +92,31 @@ const index = () => {
     setTemplate(listTemplate);
   };
 
+  
+
+const copyToClipboard = () => {
+  const clipboardText = document.getElementById("clipboard-text").value;
+
+  // Check if the Clipboard API is available in the browser
+  if (navigator.clipboard) {
+    navigator.clipboard
+      .writeText(clipboardText)
+      .then(() => {
+        // Text successfully copied to clipboard
+        alert("Text copied to clipboard!");
+      })
+      .catch((err) => {
+        // Handle any errors
+        console.error("Error copying text to clipboard:", err);
+      });
+  } else {
+    // Clipboard API not available, provide a fallback or message
+    alert(
+      "Clipboard API is not supported in this browser. You can manually copy the text."
+    );
+  }
+};
+
   return (
     <Box>
       <Heading textStyle={"h1"}>Simple ToS Generator</Heading>
@@ -305,7 +330,7 @@ const index = () => {
       </InputGroup>
       <br />
       <Button onClick={generateTemplate}>Generate</Button>
-      <Button>Copy to Clipboard</Button>
+      <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
       <Button>Copy Plain Text</Button>
       <p id="output">{template}</p>
       <Box>
