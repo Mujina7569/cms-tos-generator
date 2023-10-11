@@ -83,7 +83,6 @@ const index = () => {
           {form.maxSize.dpi} DPI หรือต้องการไฟล์ {form.addDeliverables}{" "}
           จะมีการคิดเพิ่ม
         </li>
-        {/* FIXME: Result */}
           {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
           {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
@@ -95,14 +94,10 @@ const index = () => {
     setTemplate(listTemplate);
   };
 
-  //FIXME: Handle
-  const handleRadioChange = (val) => {
-      setForm((prev) => ({ ...prev, rushDuration: e.target.value }))
-    // generateTemplate();
-  };
-
-  const handleDurationChange = (e) => {
-    setForm((prev) => ({ ...prev, rushDuration: e.target.value }));
+  const handleRadioChange = (e) => {
+      setForm((prev) => ({ ...prev, rush: e.target.value }))
+      setChoice(e.target.value);
+      console.log(choice)
     // generateTemplate();
   };
 
@@ -310,13 +305,12 @@ const copyToClipboard = () => {
         onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}
       >
         <Text>การรับงานเร่ง</Text>
-        {/* FIXME: Form */}
         <Stack direction="row">
-          <Radio value="รับงานเร่ง "
+          <Radio value="accept"
           checked={choice === 'accept'}
           onChange={handleRadioChange}
           >รับงานเร่ง</Radio>
-          <Radio value="ไม่รับงานเร่งทุกกรณี"
+          <Radio value="decline"
           checked={choice === 'decline'}
           onChange={handleRadioChange}>ไม่รับงานเร่ง</Radio>
         </Stack>
