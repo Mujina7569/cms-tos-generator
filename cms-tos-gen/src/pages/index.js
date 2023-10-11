@@ -45,12 +45,7 @@ const index = () => {
     commercialPercentSorce: "ราคาเริ่มต้น",
   });
 
-  const [choice, setChoice] = useState('decline');
-
-  //FIXME: result not show
-  const handleRadioChange = (event) => {
-    setChoice(event.target.value);
-  };
+  const [choice, setChoice] = useState('accept');
 
   const [template, setTemplate] = useState(null);
   const generateTemplate = () => {
@@ -88,7 +83,7 @@ const index = () => {
           {form.maxSize.dpi} DPI หรือต้องการไฟล์ {form.addDeliverables}{" "}
           จะมีการคิดเพิ่ม
         </li>
-        //FIXME: result not show
+        {/* FIXME: Result */}
           {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
           {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
@@ -100,6 +95,16 @@ const index = () => {
     setTemplate(listTemplate);
   };
 
+  //FIXME: Handle
+  const handleRadioChange = (val) => {
+      setForm((prev) => ({ ...prev, rushDuration: e.target.value }))
+    // generateTemplate();
+  };
+
+  const handleDurationChange = (e) => {
+    setForm((prev) => ({ ...prev, rushDuration: e.target.value }));
+    // generateTemplate();
+  };
 
 const copyToClipboard = () => {
   // Get the list element
@@ -305,7 +310,7 @@ const copyToClipboard = () => {
         onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}
       >
         <Text>การรับงานเร่ง</Text>
-        //FIXME: result not show
+        {/* FIXME: Form */}
         <Stack direction="row">
           <Radio value="รับงานเร่ง "
           checked={choice === 'accept'}
