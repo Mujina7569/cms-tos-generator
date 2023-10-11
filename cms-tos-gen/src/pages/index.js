@@ -332,7 +332,6 @@ const copyToClipboard = () => {
       <br />
       <Button onClick={generateTemplate}>Generate</Button>
       <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
-      <Button>Copy Plain Text</Button>
       <p id="output">{template}</p>
     </Box>
   );
