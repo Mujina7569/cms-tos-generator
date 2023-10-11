@@ -92,30 +92,43 @@ const index = () => {
     setTemplate(listTemplate);
   };
 
-  
-//FIXME: Copy Success But No text in cilpboard
-const copyToClipboard = () => {
-  const clipboardText = document.getElementById("clipboard-text").value;
 
-  // Check if the Clipboard API is available in the browser
+const copyToClipboard = () => {
+  // Get the list element
+  const listElement = document.getElementById("output");
+  
+  // Get all list items within the list element
+  const listItems = listElement.querySelectorAll('li');
+
+  // Create an array to store plain text items with numbered list
+  const plainTextItems = [];
+
+  // Convert list items to plain text with numbered list items
+  listItems.forEach((item, index) => {
+    // Use index + 1 for numbering (index is 0-based)
+    plainTextItems.push(`${index + 1}. ${item.textContent}`);
+  });
+
+  // Join the plain text items with line breaks to create plain text with numbered list
+  const plainText = plainTextItems.join('\n');
+
+  // Use the Clipboard API to copy the plain text with line breaks
   if (navigator.clipboard) {
-    navigator.clipboard
-      .writeText(clipboardText)
+    navigator.clipboard.writeText(plainText)
       .then(() => {
         // Text successfully copied to clipboard
-        alert("Text copied to clipboard!");
+        alert("Plain text with numbered list copied to clipboard!");
       })
       .catch((err) => {
         // Handle any errors
-        console.error("Error copying text to clipboard:", err);
+        console.error("Error copying plain text to clipboard:", err);
       });
   } else {
     // Clipboard API not available, provide a fallback or message
-    alert(
-      "Clipboard API is not supported in this browser. You can manually copy the text."
-    );
+    alert("Clipboard API is not supported in this browser. You can manually copy the text.");
   }
 };
+
 
   return (
     <Box>
