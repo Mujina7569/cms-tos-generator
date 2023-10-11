@@ -1,4 +1,5 @@
 {
+  "homepage": "https://mujina7569.github.io/cms-tos-generator/",
   "name": "cms-tos-gen",
   "version": "0.1.0",
   "private": true,
@@ -7,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
