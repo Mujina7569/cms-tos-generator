@@ -47,7 +47,7 @@ const index = () => {
 
   const [choice, setChoice] = useState('decline');
 
-  //FIXME: result to show
+  //FIXME: result not show
   const handleRadioChange = (event) => {
     setChoice(event.target.value);
   };
@@ -88,7 +88,7 @@ const index = () => {
           {form.maxSize.dpi} DPI หรือต้องการไฟล์ {form.addDeliverables}{" "}
           จะมีการคิดเพิ่ม
         </li>
-        //FIXME: result to show
+        //FIXME: result not show
           {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
           {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
@@ -305,7 +305,7 @@ const copyToClipboard = () => {
         onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}
       >
         <Text>การรับงานเร่ง</Text>
-        //FIXME: result to show
+        //FIXME: result not show
         <Stack direction="row">
           <Radio value="รับงานเร่ง "
           checked={choice === 'accept'}
