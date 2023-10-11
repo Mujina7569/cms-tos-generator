@@ -314,7 +314,7 @@ const copyToClipboard = () => {
             setForm((prev) => ({ ...prev, commercialPercent: e.target.value }))
           }
         ></Input>
-        <InputRightAddon>ครั้งต่อ</InputRightAddon>
+        <InputRightAddon>% ของ</InputRightAddon>
         <Select
           placeholder="ราคาเริ่ม/ราคารวม"
           value={form.commercialPercentSorce}
