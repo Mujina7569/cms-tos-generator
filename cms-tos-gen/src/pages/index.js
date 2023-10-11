@@ -44,16 +44,24 @@ const index = () => {
     commercialPercent: 50,
     commercialPercentSorce: "ราคาเริ่มต้น",
   });
+
+  const [choice, setChoice] = useState('decline');
+
+  //FIXME: result to show
+  const handleRadioChange = (event) => {
+    setChoice(event.target.value);
+  };
+
   const [template, setTemplate] = useState(null);
   const generateTemplate = () => {
     const listTemplate = (
       <ul>
         <li>ลูกค้าจะต้องติดต่อจ้าง ผ่านช่องทางที่ระบุไว้เท่านั้น</li>
         <li>
-          สามารถนำรูปไปใช้{" "}
+          สามารถนำรูปไปใช้ 
           {form.rights.map((item) => (
-            <a>{item}</a>
-          ))}{" "}
+            <a>{item}</a> 
+          ))}
           แต่ต้องให้เครดิตหรือแสดงแหล่งที่มา
           พร้อมลิงค์ช่องโซเซียลมิเดียที่ระบุไว้
         </li>
@@ -80,9 +88,9 @@ const index = () => {
           {form.maxSize.dpi} DPI หรือต้องการไฟล์ {form.addDeliverables}{" "}
           จะมีการคิดเพิ่ม
         </li>
-        <li>
-          {form.rush} ไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น
-        </li>
+        //FIXME: result to show
+          {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
+          {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
           หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม{" "}
           {form.commercialPercent} % ของ{form.commercialPercentSorce}
@@ -297,9 +305,15 @@ const copyToClipboard = () => {
         onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}
       >
         <Text>การรับงานเร่ง</Text>
+        //FIXME: result to show
         <Stack direction="row">
-          <Radio value="รับงานเร่ง">รับงานเร่ง</Radio>
-          <Radio value="ไม่รับงานเร่งทุกกรณี">ไม่รับงานเร่ง</Radio>
+          <Radio value="รับงานเร่ง "
+          checked={choice === 'accept'}
+          onChange={handleRadioChange}
+          >รับงานเร่ง</Radio>
+          <Radio value="ไม่รับงานเร่งทุกกรณี"
+          checked={choice === 'decline'}
+          onChange={handleRadioChange}>ไม่รับงานเร่ง</Radio>
         </Stack>
       </RadioGroup>
 
