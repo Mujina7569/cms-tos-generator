@@ -87,5 +87,3 @@ Inspiration, code snippets, etc.
 [React-url]: https://reactjs.org/
 [ChakraUI]: https://img.shields.io/badge/ChakraUI-white?style=flat&logo=chakraui&logoColor=319795
 [Chakra-url]: https://chakra-ui.com/
-
-[EOF]
