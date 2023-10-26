@@ -57,8 +57,8 @@ code blocks for commands
 
 ช่องทางติดต่อ
 
-* Facebook Page
-* X (Twitter)
+* [![Facebook][FB-page]][FB-url]
+* [![X][twitter]][twitter-url]
 
 ## Authors
 
@@ -91,8 +91,13 @@ Inspiration, code snippets, etc.
 * [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46) -->
 
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=flat&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
 [ChakraUI]: https://img.shields.io/badge/ChakraUI-white?style=flat&logo=chakraui&logoColor=319795
+[FB-Page]: https://img.shields.io/badge/Facebook-white?style=flat&logo=facebook&logoColor=0866FF
+[twitter]: https://img.shields.io/badge/Twitter(X)-white?style=flat&logo=x&logoColor=000000
+
+[Next-url]: https://nextjs.org/
 [Chakra-url]: https://chakra-ui.com/
+[React-url]: https://reactjs.org/
+[FB-url]: https://www.facebook.com/100094623903411/
+[twitter-url]: https://twitter.com/mujina7569/

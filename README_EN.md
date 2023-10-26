@@ -82,8 +82,9 @@ Inspiration, code snippets, etc.
 * [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46) -->
 
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=flat&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
 [ChakraUI]: https://img.shields.io/badge/ChakraUI-white?style=flat&logo=chakraui&logoColor=319795
+
+[Next-url]: https://nextjs.org/
 [Chakra-url]: https://chakra-ui.com/
+[React-url]: https://reactjs.org/
