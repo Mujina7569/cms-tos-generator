@@ -13,11 +13,13 @@ import {
   Radio,
   RadioGroup,
   Select,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  ButtonGroup,
+  Divider,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Link,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
@@ -51,10 +53,10 @@ const index = () => {
   const generateTemplate = () => {
     const rightsText = form.rights.join(', ');
     const deliverablesText = form.deliverables.join(', ');
-    const addDeliverablesText = form.addDeliverables.join(', '); 
+    const addDeliverablesText = form.addDeliverables.join(', ');
 
     const listTemplate = (
-      <ul>
+      <ol>
         <li>ลูกค้าจะต้องติดต่อจ้าง ผ่านช่องทางที่ระบุไว้เท่านั้น</li>
         <li>
           สามารถนำรูปไปใช้ {rightsText} โดยต้องให้เครดิตหรือแสดงแหล่งที่มา พร้อมลิงค์ช่องโซเซียลมิเดียที่ระบุไว้
@@ -71,51 +73,60 @@ const index = () => {
         <li>
           ไฟล์ที่ได้รับจะเป็นนามสกุล {deliverablesText} ขนาด {form.size.width} x {form.size.height} px {form.size.dpi} DPI หากขนาดใหญ่กว่า {form.maxSize.width} x {form.maxSize.height} px {form.maxSize.dpi} DPI หรือต้องการไฟล์ {addDeliverablesText} จะมีการคิดเพิ่ม
         </li>
-          {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
-          {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
+        {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
+        {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
           หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.commercialPercent} % ของ{form.commercialPercentSorce}
         </li>
-      </ul>
+      </ol>
     );
     setTemplate(listTemplate);
   };
 
   const handleRadioChange = (e) => {
-      setForm((prev) => ({ ...prev, rush: e.target.value }))
-      setChoice(e.target.value);
-      console.log(choice)
+    setForm((prev) => ({ ...prev, rush: e.target.value }))
+    setChoice(e.target.value);
+    console.log(choice)
     // generateTemplate();
   };
 
-const copyToClipboard = () => {
-  const listElement = document.getElementById("output");
-  const listItems = listElement.querySelectorAll('li');
-  const plainTextItems = [];
+  const copyToClipboard = () => {
+    const listElement = document.getElementById("output");
+    const listItems = listElement.querySelectorAll('li');
+    const plainTextItems = [];
 
-  listItems.forEach((item, index) => {
-    plainTextItems.push(`${index + 1}. ${item.textContent}`);
-  });
+    listItems.forEach((item, index) => {
+      plainTextItems.push(`${index + 1}. ${item.textContent}`);
+    });
 
-  const plainText = plainTextItems.join('\n');
+    const plainText = plainTextItems.join('\n');
 
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(plainText)
-      .then(() => {
-        alert("คัดลอก สำเร็จ");
-      })
-      .catch((err) => {
-        console.error("Error copying plain text to clipboard:", err);
-      });
-  } else {
-    alert("Clipboard API is not supported in this browser. You can manually copy the text.");
-  }
-};
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(plainText)
+        .then(() => {
+          alert("คัดลอก สำเร็จ");
+        })
+        .catch((err) => {
+          console.error("Error copying plain text to clipboard:", err);
+        });
+    } else {
+      alert("Clipboard API is not supported in this browser. You can manually copy the text.");
+    }
+  };
 
 
   return (
     <Box>
       <Heading textStyle={"h1"}>Simple ToS Generator</Heading>
+      <Alert status='warning'>
+        <AlertIcon />
+        <Text>
+          ตัวเว็บยังอยู่ในช่วงพัฒนานะครับ หากพบปัญหา หรือมีข้อเสนอแนะ สามารถแจ้งได้ทั้งทาง{' '}
+          <Link color='teal.500' href='https://www.facebook.com/100071647267777/'>Facebook</Link>,{' '}
+          <Link color='teal.500' href='https://twitter.com/mujina7569/'>Twitter (X)</Link>{' '}และ{' '}
+          <Link color='teal.500' href='https://github.com/Mujina7569/cms-tos-generator/issues'>Github issues</Link>
+        </Text>
+      </Alert>
       <br />
       <CheckboxGroup
         value={form.rights}
@@ -209,7 +220,7 @@ const copyToClipboard = () => {
         </InputLeftAddon>
         <Input
           value={form.size.height}
-          onChange={(e) => setForm((prev) => ({...prev, size:{ ...prev.size, height: e.target.value }}))}
+          onChange={(e) => setForm((prev) => ({ ...prev, size: { ...prev.size, height: e.target.value } }))}
         ></Input>
         <InputRightAddon>px</InputRightAddon>
 
@@ -218,7 +229,7 @@ const copyToClipboard = () => {
         </InputLeftAddon>
         <Input
           value={form.size.dpi}
-          onChange={(e) => setForm((prev) => ({...prev, size:{ ...prev.size, dpi: e.target.value }}))}
+          onChange={(e) => setForm((prev) => ({ ...prev, size: { ...prev.size, dpi: e.target.value } }))}
         ></Input>
         <InputRightAddon>DPI</InputRightAddon>
       </InputGroup>
@@ -231,7 +242,7 @@ const copyToClipboard = () => {
         <Input
           value={form.maxSize.width}
           onChange={(e) =>
-            setForm((prev) => ({...prev, maxSize:{ ...prev.maxSize, width: e.target.value }}))
+            setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, width: e.target.value } }))
           }
         ></Input>
         <InputRightAddon>px</InputRightAddon>
@@ -242,7 +253,7 @@ const copyToClipboard = () => {
         <Input
           value={form.maxSize.height}
           onChange={(e) =>
-            setForm((prev) => ({...prev, maxSize:{ ...prev.maxSize, height: e.target.value }}))
+            setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, height: e.target.value } }))
           }
         ></Input>
         <InputRightAddon>px</InputRightAddon>
@@ -253,7 +264,7 @@ const copyToClipboard = () => {
         <Input
           value={form.maxSize.dpi}
           onChange={(e) =>
-            setForm((prev) => ({...prev, maxSize:{ ...prev.maxSize, dpi: e.target.value }}))
+            setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, dpi: e.target.value } }))
           }
         ></Input>
         <InputRightAddon>DPI</InputRightAddon>
@@ -282,12 +293,12 @@ const copyToClipboard = () => {
         <Text>การรับงานเร่ง</Text>
         <Stack direction="row">
           <Radio value="accept"
-          checked={choice === 'accept'}
-          onChange={handleRadioChange}
+            checked={choice === 'accept'}
+            onChange={handleRadioChange}
           >รับงานเร่ง</Radio>
           <Radio value="decline"
-          checked={choice === 'decline'}
-          onChange={handleRadioChange}>ไม่รับงานเร่ง</Radio>
+            checked={choice === 'decline'}
+            onChange={handleRadioChange}>ไม่รับงานเร่ง</Radio>
         </Stack>
       </RadioGroup>
 
@@ -330,9 +341,28 @@ const copyToClipboard = () => {
         </Select>
       </InputGroup>
       <br />
-      <Button onClick={generateTemplate}>Generate</Button>
-      <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
-      <p id="output">{template}</p>
+      <ButtonGroup>
+        <Button onClick={generateTemplate}>Generate</Button>
+      </ButtonGroup>
+      <Alert status='info'>
+        <AlertIcon />
+        หลังจากกด Generate ข้อความที่แสดงจะไม่มีเลขข้อ แต่ข้อความที่ได้จากการกด Copy to Clipboard จะมีเลขข้อใส่ให้นะครับ
+      </Alert>
+      <br /><br />
+      <Divider />
+      <br />
+      <Box>
+        <Text id="output">{template}</Text>
+        <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
+      </Box>
+
+      <br /><br />
+      <Divider />
+      <br />
+      <ButtonGroup>
+        <Button bg={"#f49415"} color='white'>สมทบทุนค่าเน็ตผ่าน Tipme</Button>
+        <Button bg={"#13C3FF"} color='white'>สมทบทุนค่าเน็ตผ่าน Ko-Fi</Button>
+      </ButtonGroup>
     </Box>
   );
 };
