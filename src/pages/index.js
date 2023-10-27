@@ -360,8 +360,12 @@ const index = () => {
       <Divider />
       <br />
       <ButtonGroup>
-        <Button bg={"#f49415"} color='white'>สมทบทุนค่าเน็ตผ่าน Tipme</Button>
-        <Button bg={"#13C3FF"} color='white'>สมทบทุนค่าเน็ตผ่าน Ko-Fi</Button>
+        <Link href='https://tipme.in.th/mujina7569' isExternal>
+        <Button bg={"#f49415"} color='white' >สมทบทุนค่าเน็ตผ่าน Tipme</Button>
+        </Link>
+        <Link href='https://ko-fi.com/mujina7569' isExternal>
+        <Button bg={"#13C3FF"} color='white' href='https://ko-fi.com/mujina7569/'>สมทบทุนค่าเน็ตผ่าน Ko-Fi</Button>
+        </Link>
       </ButtonGroup>
     </Box>
   );
