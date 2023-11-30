@@ -1,14 +1,19 @@
 import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
   CheckboxGroup,
   Heading,
   Checkbox,
   Stack,
   Box,
+  Input,
   InputGroup,
+  InputRightAddon,
   InputLeftAddon,
   Text,
-  Input,
-  InputRightAddon,
+  Textarea,
   Button,
   Radio,
   RadioGroup,
@@ -20,31 +25,60 @@ import {
   AlertTitle,
   AlertDescription,
   Link,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
+  Tooltip,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  HStack,
+  VStack,
+} from '@chakra-ui/react';
 
+import {
+  InfoIcon,
+  CheckIcon,
+} from '@chakra-ui/icons';
+
+import {
+  FaRegCopy,
+  FaDonate,
+  FaGithub,
+} from 'react-icons/fa';
+
+import { 
+  LiaPenNibSolid, 
+} from "react-icons/lia";
+
+import { 
+  SiKofi 
+} from "react-icons/si";
+
+import React, { useState } from 'react';
+
+// NOTE: Value
 const index = () => {
   const [form, setForm] = useState({
-    rights: [],
+    rights: ['ส่วนตัว', 'แจกจ่าย'],
     installment: 50,
     remind: 1,
-    remindUnit: "วัน",
-    deliverables: [],
+    remindUnit: 'วัน',
+    deliverables: ['JPG', 'PNG'],
     size: {
       width: 3508,
       height: 2480,
-      dpi: 300,
+      dpi: 150,
     },
     maxSize: {
       width: 3508,
       height: 2480,
       dpi: 300,
     },
-    addDeliverables: [],
-    rush: "",
+    addDeliverables: ['PSD'],
+    rush: 'accept',
     rushDuration: 3,
-    commercialPercent: 50,
-    commercialPercentSorce: "ราคาเริ่มต้น",
+    commercialPercent: 3,
+    commercialPercentSorce: 'ราคาเริ่มต้น',
   });
 
   const [choice, setChoice] = useState('accept');
@@ -55,6 +89,7 @@ const index = () => {
     const deliverablesText = form.deliverables.join(', ');
     const addDeliverablesText = form.addDeliverables.join(', ');
 
+    // NOTE: Template
     const listTemplate = (
       <ol>
         <li>ลูกค้าจะต้องติดต่อจ้าง ผ่านช่องทางที่ระบุไว้เท่านั้น</li>
@@ -76,7 +111,7 @@ const index = () => {
         {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
         {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
-          หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.commercialPercent} % ของ{form.commercialPercentSorce}
+          หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.commercialPercent} เท่าของ{form.commercialPercentSorce}
         </li>
       </ol>
     );
@@ -91,7 +126,7 @@ const index = () => {
   };
 
   const copyToClipboard = () => {
-    const listElement = document.getElementById("output");
+    const listElement = document.getElementById('output');
     const listItems = listElement.querySelectorAll('li');
     const plainTextItems = [];
 
@@ -104,269 +139,398 @@ const index = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(plainText)
         .then(() => {
-          alert("คัดลอก สำเร็จ");
+          alert('คัดลอกสำเร็จ');
         })
         .catch((err) => {
-          console.error("Error copying plain text to clipboard:", err);
+          console.error('Error copying plain text to clipboard:', err);
         });
     } else {
-      alert("Clipboard API is not supported in this browser. You can manually copy the text.");
+      alert('Clipboard API is not supported in this browser. You can manually copy the text.');
     }
   };
 
 
   return (
     <Box>
-      <Heading textStyle={"h1"}>Simple ToS Generator</Heading>
-      <Alert status='warning'>
+      <Box bgColor={'#E7EDFD'} color={'#486189'}>
+      <Heading textStyle={'h1'} padding={3}>
+        Simple ToS Generator
+      </Heading>
+      </Box>
+      <Alert status='error'color={'#e43f3f'}>
+  <AlertIcon />
+  <Text>แบบข้อตกลงเบื้องต้นนี้ มีไว้เพื่อเป็นแนวทางในการเขียนข้อตกลงสำหรับใช้ในคอมมิชชั่น หรืองานจ้างต่างๆ ผู้พัฒนาจะไม่รับผิดชอบต่อผลทางกฏหมาย และความเสียหาย/ความสูญเสียโดยตรงหรือโดยอ้อมที่บุคคล/บริษัทได้รับ เนื่องจากการใช้เอกสารนี้ 
+โปรดปรึกษากับทนาย ก่อนนำไปใช้ทางกฏหมาย</Text>
+</Alert>
+      <Alert status='warning' color={'#DD6B20'}>
         <AlertIcon />
-        <Text>
-          ตัวเว็บยังอยู่ในช่วงพัฒนานะครับ หากพบปัญหา หรือมีข้อเสนอแนะ สามารถแจ้งได้ทั้งทาง{' '}
+        <AlertTitle>อยู่ในระหว่างพัฒนา!</AlertTitle>
+  <AlertDescription>ตัวเว็บยังอยู่ในช่วงพัฒนานะครับ หากพบปัญหา หรือมีข้อเสนอแนะ สามารถแจ้งได้ทั้งทาง{' '}
           <Link color='teal.500' href='https://www.facebook.com/100071647267777/'>Facebook</Link>,{' '}
           <Link color='teal.500' href='https://twitter.com/mujina7569/'>Twitter (X)</Link>{' '}และ{' '}
-          <Link color='teal.500' href='https://github.com/Mujina7569/cms-tos-generator/issues'>Github issues</Link>
-        </Text>
+          <Link color='teal.500' href='https://github.com/Mujina7569/cms-tos-generator/issues'>Github issues</Link></AlertDescription>
       </Alert>
       <br />
-      <CheckboxGroup
-        value={form.rights}
-        onChange={(val) => setForm((prev) => ({ ...prev, rights: val }))}
-      >
-        <Text>สิทธิ์การใช้งาน ในราคาปกติ</Text>
-        <Stack direction={"row"}>
-          <Checkbox value="ส่วนตัว" defaultChecked>
-            ส่วนตัว
-          </Checkbox>
-          <Checkbox value="แจกจ่าย">แจกจ่าย</Checkbox>
-          <Checkbox value="เชิงพาณิชย์">เชิงพาณิชย์</Checkbox>
-        </Stack>
-      </CheckboxGroup>
 
-      <InputGroup>
-        <InputLeftAddon>
-          <Text>ราคามัดจำ ก่อนเริ่มงาน</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.installment}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, installment: e.target.value }))
-          }
-        ></Input>
-        <InputRightAddon>%</InputRightAddon>
-      </InputGroup>
+      <HStack>
+        {/* NOTE: Rights */}
+        <Box maxW='md' borderWidth='3px' borderRadius='lg' padding={5} margin={30}>
+          <FormControl>
+            <FormLabel>สิทธิ์การใช้งาน ในราคาปกติ</FormLabel>
+            <CheckboxGroup
+              defaultValue={['ส่วนตัว', 'แจกจ่าย']}
+              value={form.rights}
+              onChange={(val) => setForm((prev) => ({ ...prev, rights: val }))}
+            >
+              <Stack direction={'row'} spacing={4}>
+                <Checkbox value='ส่วนตัว'>
+                  ส่วนตัว{' '}
+                  <Tooltip label='Fanart หรือใช้โรลเพลย์, รูปโปรไฟล์ เป็นต้น'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+                <Checkbox value='แจกจ่าย'>แจกจ่าย{' '}
+                  <Tooltip label='ของขวัญ หรือใช้ในงานการกุศล ตามจำนวนที่นักวาดกำหนดไว้'>
+                    <InfoIcon />
+                  </Tooltip></Checkbox>
+                <Checkbox value='เชิงพาณิชย์'>เชิงพาณิชย์{' '}
+                  <Tooltip label='ใช้ประกอบสินค้า และโปรโมทการค้า มีกำไร เช่น กู้ด, ปกนิยาย, โปรโมทการค้า เป็นต้น'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+              </Stack>
+            </CheckboxGroup>
+          </FormControl>
+        </Box>
 
-      <InputGroup>
-        <InputLeftAddon>
-          <Text>จำนวนครั้ง สอบถาม/ทวงงาน</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.remind}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, remind: e.target.value }))
-          }
-        ></Input>
-        <InputRightAddon>ครั้งต่อ</InputRightAddon>
-        {/* <RadioGroup defaultValue='1'>
+        <VStack>
+      {/* NOTE: Deposit */}
+      <FormControl>
+        <InputGroup maxW='xl' marginBottom={'20px'}>
+          <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+            ราคามัดจำ ก่อนเริ่มงาน
+          </InputLeftAddon>
+          <Input
+            value={form.installment}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, installment: e.target.value }))
+            }
+          ></Input>
+          <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>%</InputRightAddon>
+        </InputGroup>
+
+        {/* NOTE: Reminders */}
+        <InputGroup maxW='xl'>
+          <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+            จำนวนครั้ง สอบถาม/ทวงงาน
+          </InputLeftAddon>
+          <Input
+            value={form.remind}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, remind: e.target.value }))
+            }
+          ></Input>
+          <InputRightAddon borderRightRadius='none' bgColor={'#E7EDFD'}>ครั้งต่อ</InputRightAddon>
+          {/* <RadioGroup defaultValue='1'>
           <Stack direction='row'>
             <Radio value='1'>วัน</Radio>
             <Radio value='2'>สัปดาห์</Radio>
           </Stack>
         </RadioGroup> */}
-        <Select
-          placeholder="วัน/สัปดาห์"
-          value={form.remindUnit}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, remindUnit: e.target.value }))
-          }
-        >
-          <option value="วัน">วัน</option>
-          <option value="สัปดาห์">สัปดาห์</option>
-        </Select>
-      </InputGroup>
+          <Select
+            borderLeftRadius='none'
+            borderRightRadius='2xl'
+            borderLeftWidth={'0'}
+            value={form.remindUnit}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, remindUnit: e.target.value }))
+            }
+          >
+            <option value='วัน'>วัน</option>
+            <option value='สัปดาห์'>สัปดาห์</option>
+          </Select>
+        </InputGroup>
+        </FormControl>
+        </VStack>
 
-      <CheckboxGroup
-        value={form.deliverables}
-        onChange={(val) => setForm((prev) => ({ ...prev, deliverables: val }))}
-      >
-        <Text>ไฟล์ปกติที่ลูกค้าจะได้รับ</Text>
-        <Stack direction={"row"}>
-          <Checkbox value="JPG">.JPG</Checkbox>
-          <Checkbox value="PNG">.PNG</Checkbox>
-          <Checkbox defaultChecked value="PSD">
-            .PSD (Photoshop)
-          </Checkbox>
-          <Checkbox value="SAI">.SAI (SAI Paint tool)</Checkbox>
-          <Checkbox value="CLIP">.CLIP (CLIP STUDIO)</Checkbox>
-        </Stack>
-      </CheckboxGroup>
+      </HStack>
 
-      <Text>ขนาดรูปปกติ (สำหรับ A4 ใช้ 3508 x 2480 px 300 DPI)</Text>
-      <InputGroup>
-        <InputLeftAddon>
-          <Text>กว้าง</Text>
-        </InputLeftAddon>
-        {console.log(form)}
-        <Input
-          value={form.size.width}
-          onChange={(e) => setForm((prev) => {
-            console.log(prev)
-            return { ...prev, size: { ...prev.size, width: e.target.value } };
-          })}
-        ></Input>
-        <InputRightAddon>px</InputRightAddon>
 
-        <InputLeftAddon>
-          <Text>ยาว</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.size.height}
-          onChange={(e) => setForm((prev) => ({ ...prev, size: { ...prev.size, height: e.target.value } }))}
-        ></Input>
-        <InputRightAddon>px</InputRightAddon>
+        <FormControl>
+        <HStack>
+          {/* NOTE: File Types */}
+          <Box maxW='md' borderWidth='3px' borderRadius='lg' padding={5} margin={30}>
+            <FormLabel>ไฟล์ปกติที่ลูกค้าจะได้รับ</FormLabel>
+            <CheckboxGroup
+              value={form.deliverables}
+              onChange={(val) => setForm((prev) => ({ ...prev, deliverables: val }))}
+            >
+              <Stack direction={'row'}>
+                <Checkbox value='JPG'>.JPG</Checkbox>
+                <Checkbox value='PNG'>.PNG</Checkbox>
+                <Checkbox value='PSD'>
+                  .PSD{' '}
+                  <Tooltip label='ไฟล์ของโปรแกรม Adobe Photoshop'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+                <Checkbox value='SAI'>.SAI{' '}
+                  <Tooltip label='ไฟล์ของโปรแกรม SAI Paint tool'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+                <Checkbox value='CLIP'>.CLIP{' '}
+                  <Tooltip label='ไฟล์ของโปรแกรม CLIP STUDIO PAINT'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+              </Stack>
+            </CheckboxGroup>
+          </Box>
 
-        <InputLeftAddon>
-          <Text>ความละเอียดไฟล์</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.size.dpi}
-          onChange={(e) => setForm((prev) => ({ ...prev, size: { ...prev.size, dpi: e.target.value } }))}
-        ></Input>
-        <InputRightAddon>DPI</InputRightAddon>
-      </InputGroup>
 
-      <Text>ขนาดรูปสูงสุดในราคาปกติ</Text>
-      <InputGroup>
-        <InputLeftAddon>
-          <Text>กว้าง</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.maxSize.width}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, width: e.target.value } }))
-          }
-        ></Input>
-        <InputRightAddon>px</InputRightAddon>
+          {/* NOTE: Additional */}
+          <Box maxW='md'
+            borderWidth='3px' borderRadius='lg'
+           
+            padding={5} margin={30}>
+            <FormLabel>ไฟล์ที่จะคิดราคาเพิ่ม</FormLabel>
+            <CheckboxGroup
+              value={form.addDeliverables}
+              onChange={(val) =>
+                setForm((prev) => ({ ...prev, addDeliverables: val }))
+              }
+            >
+              <Stack direction={'row'}>
+                <Checkbox value='JPG'>.JPG</Checkbox>
+                <Checkbox value='PNG'>.PNG</Checkbox>
+                <Checkbox value='PSD'>.PSD{' '}
+                  <Tooltip label='ไฟล์ของโปรแกรม Adobe Photoshop'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+                <Checkbox value='SAI'>.SAI{' '}
+                  <Tooltip label='ไฟล์ของโปรแกรม SAI Paint tool'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+                <Checkbox value='CLIP'>.CLIP{' '}
+                  <Tooltip label='ไฟล์ของโปรแกรม CLIP STUDIO PAINT'>
+                    <InfoIcon />
+                  </Tooltip>
+                </Checkbox>
+              </Stack>
+            </CheckboxGroup>
+          </Box>
+        </HStack>
 
-        <InputLeftAddon>
-          <Text>ยาว</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.maxSize.height}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, height: e.target.value } }))
-          }
-        ></Input>
-        <InputRightAddon>px</InputRightAddon>
+        <HStack>
+        {/* NOTE: File Size */}
+        <Box maxW='4xl' borderWidth='3px' borderRadius='lg' padding={5} margin={30}>
+          <FormLabel>ขนาดรูปปกติ</FormLabel>
+          <FormHelperText>(สำหรับ A4 แนะนำ 3508 x 2480 px 150 DPI)</FormHelperText>
+          <HStack>
+          <InputGroup>
+            <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+              กว้าง
+            </InputLeftAddon>
+            {console.log(form)}
+            <Input
+              value={form.size.width}
+              onChange={(e) => setForm((prev) => {
+                console.log(prev)
+                return { ...prev, size: { ...prev.size, width: e.target.value } };
+              })}
+            ></Input>
+            <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>px</InputRightAddon>
+            </InputGroup>
 
-        <InputLeftAddon>
-          <Text>ความละเอียดไฟล์</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.maxSize.dpi}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, dpi: e.target.value } }))
-          }
-        ></Input>
-        <InputRightAddon>DPI</InputRightAddon>
-      </InputGroup>
+            <InputGroup>
+            <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+              ยาว
+            </InputLeftAddon>
+            <Input
+              value={form.size.height}
+              onChange={(e) => setForm((prev) => ({ ...prev, size: { ...prev.size, height: e.target.value } }))}
+            ></Input>
+            <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>px</InputRightAddon>
+            </InputGroup>
 
-      <CheckboxGroup
-        value={form.addDeliverables}
-        onChange={(val) =>
-          setForm((prev) => ({ ...prev, addDeliverables: val }))
-        }
-      >
-        <Text>ไฟล์ที่จะคิดราคาเพิ่ม</Text>
-        <Stack direction={"row"}>
-          <Checkbox value="JPG">.JPG</Checkbox>
-          <Checkbox value="PNG">.PNG</Checkbox>
-          <Checkbox value="PSD">.PSD (Photoshop)</Checkbox>
-          <Checkbox value="SAI">.SAI (SAI Paint tool)</Checkbox>
-          <Checkbox value="CLIP">.CLIP (CLIP STUDIO)</Checkbox>
-        </Stack>
-      </CheckboxGroup>
+            <InputGroup>
+            <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+              ความละเอียดไฟล์
+            </InputLeftAddon>
+            <Input
+              value={form.size.dpi}
+              onChange={(e) => setForm((prev) => ({ ...prev, size: { ...prev.size, dpi: e.target.value } }))}
+            ></Input>
+            <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>DPI</InputRightAddon>
+          </InputGroup>
+          </HStack>
+        </Box>
+        </HStack>
 
-      <RadioGroup
-        value={form.rush}
-        onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}
-      >
-        <Text>การรับงานเร่ง</Text>
-        <Stack direction="row">
-          <Radio value="accept"
-            checked={choice === 'accept'}
-            onChange={handleRadioChange}
-          >รับงานเร่ง</Radio>
-          <Radio value="decline"
-            checked={choice === 'decline'}
-            onChange={handleRadioChange}>ไม่รับงานเร่ง</Radio>
-        </Stack>
-      </RadioGroup>
+        {/* NOTE: Max Size */}
+        <Box maxW='4xl' borderWidth='3px' borderRadius='lg' padding={5} margin={30}>
+          <FormLabel>ขนาดรูปสูงสุดในราคาปกติ</FormLabel>
+          <FormHelperText>(สำหรับ A4 แนะนำ 3508 x 2480 px 300 DPI)</FormHelperText>
+          <HStack>
+          <InputGroup>
+            <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+              กว้าง
+            </InputLeftAddon>
+            <Input
+              value={form.maxSize.width}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, width: e.target.value } }))
+              }
+            ></Input>
+            <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>px</InputRightAddon>
+            </InputGroup>
 
-      <InputGroup>
-        <InputLeftAddon>
-          <Text>ระยะเวลาทำงานเร็วที่สุด สำหรับงานเร่ง</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.rushDuration}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, rushDuration: e.target.value }))
-          }
-        ></Input>
-        <InputRightAddon>วัน</InputRightAddon>
-      </InputGroup>
+            <InputGroup>
+            <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+              ยาว
+            </InputLeftAddon>
+            <Input
+              value={form.maxSize.height}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, height: e.target.value } }))
+              }
+            ></Input>
+            <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>px</InputRightAddon>
+            </InputGroup>
 
-      <InputGroup>
-        <InputLeftAddon>
-          <Text>การคิดราคาเชิงพาณิชย์ เพิ่มอีก</Text>
-        </InputLeftAddon>
-        <Input
-          value={form.commercialPercent}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, commercialPercent: e.target.value }))
-          }
-        ></Input>
-        <InputRightAddon>% ของ</InputRightAddon>
-        <Select
-          placeholder="ราคาเริ่ม/ราคารวม"
-          value={form.commercialPercentSorce}
-          onChange={(e) =>
-            setForm((prev) => ({
-              ...prev,
-              commercialPercentSorce: e.target.value,
-            }))
-          }
-        >
-          <option value="ราคาเริ่มต้น">ราคาเริ่มต้น</option>
-          <option value="ราคารวม">ราคารวม</option>
-        </Select>
-      </InputGroup>
-      <br />
-      <ButtonGroup>
-        <Button onClick={generateTemplate}>Generate</Button>
-      </ButtonGroup>
-      <Alert status='info'>
-        <AlertIcon />
-        หลังจากกด Generate ข้อความที่แสดงจะไม่มีเลขข้อ แต่ข้อความที่ได้จากการกด Copy to Clipboard จะมีเลขข้อใส่ให้นะครับ
-      </Alert>
+            <InputGroup>
+            <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+              ความละเอียดไฟล์
+            </InputLeftAddon>
+            <Input
+              value={form.maxSize.dpi}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, maxSize: { ...prev.maxSize, dpi: e.target.value } }))
+              }
+            ></Input>
+            <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>DPI</InputRightAddon>
+          </InputGroup>
+          </HStack>
+        </Box>
+
+
+        <HStack>
+        {/* NOTE: Rush Orders */}
+        <Box maxW='md' borderWidth='3px' borderRadius='lg' padding={5} margin={30}>
+          <FormLabel>การรับงานเร่ง</FormLabel>
+          <RadioGroup
+            value={form.rush}
+            onChange={(val) => setForm((prev) => ({ ...prev, rush: val }))}
+          >
+            <Stack direction='row'>
+              <Radio value='accept'
+                checked={choice === 'accept'}
+                onChange={handleRadioChange}
+              >รับงานเร่ง</Radio>
+              <Radio value='decline'
+                checked={choice === 'decline'}
+                onChange={handleRadioChange}>ไม่รับงานเร่ง</Radio>
+            </Stack>
+          </RadioGroup>
+        </Box>
+
+        <VStack>
+        {/* NOTE: Rush Time */}
+        <InputGroup maxW='xl' marginBottom={'20px'}>
+          <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+            ระยะเวลาทำงานเร็วที่สุด สำหรับงานเร่ง
+          </InputLeftAddon>
+          <Input
+            value={form.rushDuration}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, rushDuration: e.target.value }))
+            }
+          ></Input>
+          <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>วัน</InputRightAddon>
+        </InputGroup>
+
+        {/* NOTE: Comercial */}
+        <InputGroup maxW='xl'>
+          <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
+            การคิดราคาเชิงพาณิชย์ เพิ่มอีก
+          </InputLeftAddon>
+          <NumberInput
+            maxW='sm'
+            value={form.commercialPercent}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, commercialPercent: e.target.value }))
+            }
+          >
+
+            <NumberInputField
+              borderRadius='none' />
+          </NumberInput>
+          <InputRightAddon
+            borderRightRadius='none' bgColor={'#E7EDFD'}>เท่าของ</InputRightAddon>
+          <Select
+            borderLeftRadius='none'
+            borderRightRadius='2xl'
+            borderLeftWidth={'0'}
+            value={form.commercialPercentSorce}
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+                commercialPercentSorce: e.target.value,
+              }))
+            }
+          >
+            <option value='ราคาเริ่มต้น'>ราคาเริ่มต้น</option>
+            <option value='ราคารวม'>ราคารวม</option>
+          </Select>
+        </InputGroup>
+      </VStack>
+        
+        </HStack>
+        <br />
+        <Box maxW='md' margin={30}>
+          <Button
+            bgColor={'#486189'}
+            color={'white'}
+            borderRadius='full'
+            leftIcon={<LiaPenNibSolid />}
+            onClick={generateTemplate}
+          >
+            Generate</Button>
+        </Box>
+      </FormControl>
+
       <br /><br />
       <Divider />
       <br />
-      <Box>
-        <Text id="output">{template}</Text>
-        <Button onClick={copyToClipboard}>Copy to Clipboard</Button>
+      {/* NOTE: Output */}
+      <Box maxW='5xl' margin={30}>
+      <Box maxW='5xl' margin={30}>
+        <Text id='output'>{template}</Text>
+        </Box>
+        <Button
+            leftIcon={<FaRegCopy />} 
+            onClick={copyToClipboard}>Copy to Clipboard</Button>
       </Box>
 
       <br /><br />
       <Divider />
       <br />
+      <Box maxW='md' margin={30} alignContent={'center'}>
+      {/* NOTE: Donation */}
       <ButtonGroup>
         <Link href='https://tipme.in.th/mujina7569' isExternal>
-        <Button bg={"#f49415"} color='white' >สมทบทุนค่าเน็ตผ่าน Tipme</Button>
+        <Button bg={'#f49415'} color='white'
+            leftIcon={<FaDonate />}>สมทบทุนค่าเน็ตผ่าน Tipme</Button>
         </Link>
         <Link href='https://ko-fi.com/mujina7569' isExternal>
-        <Button bg={"#13C3FF"} color='white' href='https://ko-fi.com/mujina7569/'>สมทบทุนค่าเน็ตผ่าน Ko-Fi</Button>
+        <Button bg={'#13C3FF'} color='white'
+            leftIcon={<SiKofi />}>สมทบทุนค่าเน็ตผ่าน Ko-Fi</Button>
         </Link>
       </ButtonGroup>
+      </Box>
     </Box>
   );
 };
