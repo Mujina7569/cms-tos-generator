@@ -1,43 +1,41 @@
 import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  CheckboxGroup,
-  Heading,
-  Checkbox,
-  Stack,
   Box,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  InputLeftAddon,
+  Stack,
+  HStack,
+  VStack,
   Text,
-  Textarea,
-  Button,
-  Radio,
-  RadioGroup,
-  Select,
-  ButtonGroup,
+  Heading,
+  Link,
+  Tooltip,
   Divider,
   Alert,
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  Link,
-  Tooltip,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  InputLeftAddon,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  HStack,
-  VStack,
+  Select,
+  ButtonGroup,
+  Button,
+  CheckboxGroup,
+  Checkbox,
+  RadioGroup,
+  Radio,
 } from '@chakra-ui/react';
 
 import {
   InfoIcon,
-  CheckIcon,
 } from '@chakra-ui/icons';
 
 import {
@@ -60,10 +58,10 @@ import React, { useState } from 'react';
 const index = () => {
   const [form, setForm] = useState({
     rights: ['ส่วนตัว', 'แจกจ่าย'],
-    installment: 50,
+    deposit: 50,
     remind: 1,
     remindUnit: 'วัน',
-    deliverables: ['JPG', 'PNG'],
+    ext: ['JPG', 'PNG'],
     size: {
       width: 3508,
       height: 2480,
@@ -74,20 +72,20 @@ const index = () => {
       height: 2480,
       dpi: 300,
     },
-    addDeliverables: ['PSD'],
-    rush: 'accept',
+    addExt: ['PSD'],
+    rush: 'true',
     rushDuration: 3,
-    commercialPercent: 3,
-    commercialPercentSorce: 'ราคาเริ่มต้น',
+    multiplier: 3,
+    multiplierMode: 'ราคาเริ่มต้น',
   });
 
-  const [choice, setChoice] = useState('accept');
+  const [choice, setChoice] = useState('true');
 
   const [template, setTemplate] = useState(null);
   const generateTemplate = () => {
     const rightsText = form.rights.join(', ');
-    const deliverablesText = form.deliverables.join(', ');
-    const addDeliverablesText = form.addDeliverables.join(', ');
+    const extText = form.ext.join(', ');
+    const addExtText = form.addExt.join(', ');
 
     // NOTE: Template
     const listTemplate = (
@@ -100,18 +98,18 @@ const index = () => {
           รูปจะถูกนำไปใช้เป็นตัวอย่างงาน หากไม่ต้องการให้โพสต์เป็นตัวอย่างงาน กรุณาแจ้งล่วงหน้า
         </li>
         <li>
-          หลังจากที่ยันยันแบบร่างเรียบร้อย ลูกค้าจะต้องชำระมัดจำ {form.installment}% ของราคางาน และจะดำเนินงานต่อเมื่อชำระมัดจำเรียบร้อยแล้ว
+          หลังจากที่ยันยันแบบร่างเรียบร้อย ลูกค้าจะต้องชำระมัดจำ {form.deposit}% ของราคางาน และจะดำเนินงานต่อเมื่อชำระมัดจำเรียบร้อยแล้ว
         </li>
         <li>
           ลูกค้าสามารถติดต่อสอบถามความคืบหน้าได้ ไม่เกิน {form.remind} ครั้งต่อ {form.remindUnit} โดยติดต่อผ่านช่องทางติดต่อที่ระบุไว้เท่านั้น
         </li>
         <li>
-          ไฟล์ที่ได้รับจะเป็นนามสกุล {deliverablesText} ขนาด {form.size.width} x {form.size.height} px {form.size.dpi} DPI หากขนาดใหญ่กว่า {form.maxSize.width} x {form.maxSize.height} px {form.maxSize.dpi} DPI หรือต้องการไฟล์ {addDeliverablesText} จะมีการคิดเพิ่ม
+          ไฟล์ที่ได้รับจะเป็นนามสกุล {extText} ขนาด {form.size.width} x {form.size.height} px {form.size.dpi} DPI หากขนาดใหญ่กว่า {form.maxSize.width} x {form.maxSize.height} px {form.maxSize.dpi} DPI หรือต้องการไฟล์ {addExtText} จะมีการคิดเพิ่ม
         </li>
-        {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
-        {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
+        {choice === 'false' && <li>ไม่รับงานเร่งทุกกรณี</li>}
+        {choice === 'true' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
-          หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.commercialPercent} เท่าของ{form.commercialPercentSorce}
+          หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.multiplier} เท่าของ{form.multiplierMode}
         </li>
       </ol>
     );
@@ -211,9 +209,9 @@ const index = () => {
             ราคามัดจำ ก่อนเริ่มงาน
           </InputLeftAddon>
           <Input
-            value={form.installment}
+            value={form.deposit}
             onChange={(e) =>
-              setForm((prev) => ({ ...prev, installment: e.target.value }))
+              setForm((prev) => ({ ...prev, deposit: e.target.value }))
             }
           ></Input>
           <InputRightAddon borderRightRadius='2xl' bgColor={'#E7EDFD'}>%</InputRightAddon>
@@ -262,8 +260,8 @@ const index = () => {
           <Box maxW='md' borderWidth='3px' borderRadius='lg' padding={5} margin={30}>
             <FormLabel>ไฟล์ปกติที่ลูกค้าจะได้รับ</FormLabel>
             <CheckboxGroup
-              value={form.deliverables}
-              onChange={(val) => setForm((prev) => ({ ...prev, deliverables: val }))}
+              value={form.ext}
+              onChange={(val) => setForm((prev) => ({ ...prev, ext: val }))}
             >
               <Stack direction={'row'}>
                 <Checkbox value='JPG'>.JPG</Checkbox>
@@ -296,9 +294,9 @@ const index = () => {
             padding={5} margin={30}>
             <FormLabel>ไฟล์ที่จะคิดราคาเพิ่ม</FormLabel>
             <CheckboxGroup
-              value={form.addDeliverables}
+              value={form.addExt}
               onChange={(val) =>
-                setForm((prev) => ({ ...prev, addDeliverables: val }))
+                setForm((prev) => ({ ...prev, addExt: val }))
               }
             >
               <Stack direction={'row'}>
@@ -457,11 +455,11 @@ const index = () => {
           <InputLeftAddon borderLeftRadius='2xl' bgColor={'#E7EDFD'}>
             การคิดราคาเชิงพาณิชย์ เพิ่มอีก
           </InputLeftAddon>
-          <NumberInput
+          <NumberInput 
             maxW='sm'
-            value={form.commercialPercent}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, commercialPercent: e.target.value }))
+            value={form.multiplier}
+            onChange={ (e) =>
+              setForm((prev) => ({ ...prev, multiplier: e }))
             }
           >
 
@@ -474,12 +472,9 @@ const index = () => {
             borderLeftRadius='none'
             borderRightRadius='2xl'
             borderLeftWidth={'0'}
-            value={form.commercialPercentSorce}
+            value={form.multiplierMode}
             onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                commercialPercentSorce: e.target.value,
-              }))
+              setForm((prev) => ({...prev, multiplierMode: e.target.value}))
             }
           >
             <option value='ราคาเริ่มต้น'>ราคาเริ่มต้น</option>
