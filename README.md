@@ -89,7 +89,8 @@ TBA
 
 Inspiration, code snippets, etc.
 
-* TBA
+* [App Privacy Policy Generator][App-policy-url]
+
 <!-- * [awesome-readme](https://github.com/matiassingers/awesome-readme)
 * [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
 * [dbader](https://github.com/dbader/readme-template)
@@ -107,3 +108,5 @@ Inspiration, code snippets, etc.
 [React-url]: https://reactjs.org/
 [FB-url]: https://www.facebook.com/100094623903411/
 [twitter-url]: https://twitter.com/mujina7569/
+
+[App-policy-url]: https://app-privacy-policy-generator.firebaseapp.com
