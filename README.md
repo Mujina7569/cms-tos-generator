@@ -69,11 +69,17 @@ Contributors names and contact info
 
 ## Version History
 
-* 0.2
+* 0.2.2 (22-03-24)
+  * แก้ไข รับงานเร่ง ไม่แสดง
+* 0.2.1 (06-12-23)
+  * แก้ไข ค่าเชิงพาณิชย์ที่ไม่แก้ตามที่กรอก
+* 0.2.0 (26-10-23)
   * เพิ่มช่องทางติดต่อ และโดเนทในหน้าเว็บ
-  <!-- * See [commit change]() or See [release history]() -->
-* 0.1
+* 0.1.1 (26-10-23)
+  * เพิ่มช่องทางติดต่อ
+* 0.1.0 (11-10-23)
   * BETA Release แรก
+  <!-- * See [commit change]() or See [release history]() -->
 
 ## License
 
