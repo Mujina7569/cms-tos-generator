@@ -73,13 +73,13 @@ const index = () => {
       dpi: 300,
     },
     addExt: ['PSD'],
-    rush: 'true',
+    rush: 'accept',
     rushDuration: 3,
     multiplier: 3,
     multiplierMode: 'ราคาเริ่มต้น',
   });
 
-  const [choice, setChoice] = useState('true');
+  const [choice, setChoice] = useState('accept');
 
   const [template, setTemplate] = useState(null);
   const generateTemplate = () => {
@@ -106,8 +106,8 @@ const index = () => {
         <li>
           ไฟล์ที่ได้รับจะเป็นนามสกุล {extText} ขนาด {form.size.width} x {form.size.height} px {form.size.dpi} DPI หากขนาดใหญ่กว่า {form.maxSize.width} x {form.maxSize.height} px {form.maxSize.dpi} DPI หรือต้องการไฟล์ {addExtText} จะมีการคิดเพิ่ม
         </li>
-        {choice === 'false' && <li>ไม่รับงานเร่งทุกกรณี</li>}
-        {choice === 'true' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
+        {choice === 'decline' && <li>ไม่รับงานเร่งทุกกรณี</li>}
+        {choice === 'accept' && <li>รับงานเร่งไม่ต่ำกว่า {form.rushDuration} วันเท่านั้น</li>}
         <li>
           หากต้องการสิทธิ์เชิงพาณิชย์ โปรดแจ้งก่อนทุกครั้ง คิดเพิ่ม {form.multiplier} เท่าของ{form.multiplierMode}
         </li>
